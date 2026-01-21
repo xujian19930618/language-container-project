@@ -1,1 +1,5 @@
 # Redis 哨兵 sentinel
+name: sentinel
+services:
+  sentinel:
+    image: xxx

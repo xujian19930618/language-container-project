@@ -1,7 +1,0 @@
-name: kernel
-services:
-  kernel:
-    image: ubuntu-kernel:24.04   # 改成稳定镜像
-    volumes:
-      - /Users/xujian/Kernel:/Kernel
-    entrypoint: ["sleep", "36000"]  # 保持容器运行
