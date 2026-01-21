@@ -1,0 +1,26 @@
+#name: 主从
+version: '3.8'
+services:
+  redis-master:
+    container_name: redis-master
+    image: redis:7.2.5
+    ports:
+      - "6391:6379"
+    networks:
+      - Redis
+  redis-slave1:
+    container_name: redis-slave1
+    image: redis:7.2.5
+    ports:
+      - "6392:6379"
+    networks:
+      - Redis
+  redis-slave2:
+    container_name: redis-slave2
+    image: redis:7.2.5
+    ports:
+      - "6393:6379"
+    networks:
+      - Redis
+networks:
+  Redis:

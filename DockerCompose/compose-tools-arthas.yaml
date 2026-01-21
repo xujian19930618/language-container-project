@@ -7,7 +7,7 @@ services:
       - ./arthas:/opt/arthas
     command:
       - java
-#      - -javaagent:/opt/arthas/arthas-agent.jar
+      #      - -javaagent:/opt/arthas/arthas-agent.jar
       - -jar
       - /opt/arthas/math-game.jar
     networks:

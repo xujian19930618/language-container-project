@@ -1,0 +1,46 @@
+apiVersion: apps/v1           # deployment api 版本
+kind: Deployment              # 资源类型为 deployment
+metadata:                     # 元数据
+  name: nginx-deploy          # deployment 名称
+  labels:                     # 标签
+    app: nginx-deploy         # 具体的 key:value 配置形式
+spec:                         # 描述
+  replicas: 1                 # 期望副本数
+  selector:                   # 选择器，用于找到匹配的 RS
+    matchLabels:              # 按照标签匹配
+      app: nginx-deploy       # 匹配的标签 key/value
+  strategy:                   # 更新策略
+    rollingUpdate:            # 滚动更新策略
+      maxSurge: 25%           # 进行滚动更新时，更新的个数最多可以超过期望副本数的个数/比例
+      maxUnavailable: 25%     # 进行滚动更新时，最大不可用比例更新比例，表示在所有副本数中，最多可以有多少个不更新成功
+    type: RollingUpdate       # 更新类型，采用滚动更新
+  template:                   # Pod 模版
+    metadata:                 # Pod的元信息
+      labels:                 # Pod 的标签
+        app: nginx-deploy     # 标签被选择匹配
+    spec:                     # Pod 期望信息
+      imagePullSecrets:       # 配置登录 docker registry 的 secret
+        - name: harbor
+      containers:             # Pod 的容器
+        - name: nginx         # 容器名称
+          image: harbor.xujian.org.cn/library/nginx:stabe-libs # 镜像
+          imagePullPolicy: IfNotPresent   # 拉取策略
+          resources:
+            requests:
+              cpu: 100m
+              memory: 1Gi
+            limits:
+              cpu: 200m
+              memory: 2Gi
+          volumeMounts:
+            - mountPath: /xxx
+              name: nginx-conf
+      volumes:
+        - name: nginx-conf                              # 数据卷名称: 随意设置, 挂载时使用
+          configMap:
+            name: config-map                            # 使用 ConfigMap 名称                            # 使用 ConfigMap
+            items:
+              - key: key1                               # ConfigMap 中 Key
+                path: etc/nginx/nginx.conf
+      restartPolicy: Always   # 重启策略
+      terminationGracePeriodSeconds: 30   # 删除操作最多宽限多长时间

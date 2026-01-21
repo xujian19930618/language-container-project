@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: arthas-tunnel-server
+  labels:
+    app: arthas-tunnel-server
+  namespace: tools
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: arthas-tunnel-server
+  template:
+    metadata:
+      name: arthas-tunnel-server
+      labels:
+        app: arthas-tunnel-server
+    spec:
+      containers:
+        - name: arthas-tunnel-server
+          image: harbor.xujian.org.cn/arm64/arthas-tunnel-server:v4.1.1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: web
+              containerPort: 8080
+              protocol: TCP
+            - name: ws
+              containerPort: 7777
+              protocol: TCP
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: arthas-tunnel-svc
+  namespace: tools
+spec:
+  selector:
+    app: arthas-tunnel-server
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+      nodePort: 31080
+      name: web
+    - protocol: TCP
+      port: 7777
+      targetPort: 7777
+      nodePort: 31077
+      name: ws
+  type: NodePort
+  

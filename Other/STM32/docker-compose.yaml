@@ -1,0 +1,7 @@
+name: stm32
+services:
+  stm32:
+    image: ubuntu:24.04   # 改成稳定镜像
+    volumes:
+      - /Users/xujian/stm32:/root/stm32
+    entrypoint: ["sleep", "36000"]  # 保持容器运行

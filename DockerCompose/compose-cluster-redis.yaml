@@ -1,3 +1,4 @@
+name: redis
 services:
   redis-cluster-01:
     container_name: redis-cluster-01

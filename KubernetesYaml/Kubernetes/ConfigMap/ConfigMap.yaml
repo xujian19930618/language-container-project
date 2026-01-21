@@ -1,0 +1,103 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config-map
+  namespace: configmap
+data:
+  key1: "value1"
+  key2: "value2"
+  key3: "value3"
+
+# 方式一: kubectl create configmap myconfig --from-file=.file
+# 方式二: kubectl create configmap myconfig --from-file=key1=./file/xx.yaml --from-file=key2=.file/yy.yaml
+# 方式三: kubectl create configmap myconfig --from-literal=key1=config1 --from-literal=key2=config2
+# 方式四: kubectl create configmap myconfig --from-file=/path/to/bar
+# 方式五: kubectl create configmap myconfig --from-env-file=path/to/foo.env --from-env-file=path/to/bar.env
+
+---
+# 方式一:  键值对使用配置文件
+apiVersion: v1
+kind: Pod
+metadata:
+  name: alpine-configmap1
+  namespace: configmap
+spec:
+  containers:
+    - name: alpine
+      image: harbor.xujian.org.cn/library/alpine:3.20
+      command: ["/bin/sh", "-c", "env;sleep 3600"]
+      imagePullPolicy: IfNotPresent
+      env:                                        # 环境变量
+        - name: key1                              # 环境变量名称
+          valueFrom:
+            configMapKeyRef:
+              name: config-map                    # ConfigMap 名称
+              key: key1                           # 从 name 的 ConfigMap 中获取名称为 key 的 value, 将其赋值给本地环境变量 key1
+  restartPolicy: Always
+
+---
+# 方式二: 文件使用配置文件
+apiVersion: v1
+kind: Pod
+metadata:
+  name: alpine-configmap2
+  namespace: configmap
+spec:
+  containers:
+    - name: alpine
+      image: harbor.xujian.org.cn/library/alpine:3.20
+      command: ["/bin/sh", "-c", "env;sleep 3600"]
+      imagePullPolicy: IfNotPresent
+      volumeMounts:
+        - mountPath: /etc/mysql/conf
+          name: db-config
+          readOnly: true
+  volumes:                                  # 数据卷挂载 ConfigMap/Secret
+    - name: db-config                       # 数据卷名称: 随意设置
+      configMap:                            # 数据卷类型 ConfigMap
+        name: config-map                    # ConfigMap 名称, 必须跟想要加载的 ConfigMap 相同
+        items:                              # 对 ConfigMap 中的 key进行映射, 如果不指定, 默认会将 ConfigMap 中所有 key 全部转换为一个个同名的文件
+          - key: key1                       # ConfigMap中的Key
+            path: "db.properties"           # 将该Key转换为文件
+  restartPolicy: Always
+
+---
+# 方式三: SubPath 使用
+apiVersion: v1
+kind: Pod
+metadata:
+  name: alpine-configmap3
+  namespace: configmap
+spec:
+  containers:
+    - name: alpine
+      image: harbor.xujian.org.cn/library/alpine:3.20
+      command: ["/bin/sh", "-c", "env;sleep 3600"]
+      imagePullPolicy: IfNotPresent
+      volumeMounts:
+        - mountPath: /etc/nginx/nginx.conf          # 挂载容器内位置
+          name: nginx-conf                          # 使用 ConfigMap 或 Secret, voluems[0].name
+          subPath: etc/nginx/nginx.conf             # # volumes[0].items.path 相同
+  volumes:
+    - name: nginx-conf                              # 数据卷名称: 随意设置, 挂载时使用
+      configMap:
+        name: config-map                            # 使用 ConfigMap 名称                            # 使用 ConfigMap
+        items:
+          - key: key1                               # ConfigMap 中 Key
+            path: etc/nginx/nginx.conf
+  restartPolicy: Always
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

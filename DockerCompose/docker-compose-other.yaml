@@ -1,0 +1,258 @@
+name: expedition
+services:
+  # MySQL, Redis, Elasticsearch
+  mysql:
+    container_name: mysql
+    image: ${IMAGE_REGISTRY}/${MYSQL_IMAGE_REPOSITORY}:${MYSQL_VERSION}
+    env_file:
+      - SQL/mysql/.env
+    ports:
+      - "33306:3306"
+    volumes:
+      - ./mysql/conf.d:/etc/mysql/conf.d
+      - ./mysql/entrypoint:/docker-entrypoint-initdb.d
+      - mysql_data:/var/lib/mysql
+      - mysql_log:/var/log/mysql
+    networks:
+      - expedition
+  redis:
+    container_name: redis
+    image: ${IMAGE_REGISTRY}/${REDIS_IMAGE_REPOSITORY}:${REDIS_VERSION}
+    volumes:
+      - ./redis/config:/etc/redis
+      - redis_data:/data
+    command: redis-server /etc/redis/redis.conf
+    env_file:
+      - .env
+      - NoSQL/redis/.env
+    ports:
+      - "36379:6379"
+    networks:
+      - expedition
+  elasticsearch:
+    container_name: elasticsearch
+    image: ${IMAGE_REGISTRY}/${ELASTICSEARCH_IMAGE_REPOSITORY}:${ELASTICSEARCH_VERSION}
+    env_file:
+      - NoSQL/elastic/.env
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+      - ./elastic/plugins:/usr/share/elasticsearch/plugins
+    ports:
+      - "39200:9200"
+      - "39300:9300"
+    networks:
+      - expedition
+  nacos-server:
+    container_name: nacos-server
+    image: ${IMAGE_REGISTRY}/${NACOS_IMAGE_REPOSITORY}:${NACOS_VERSION}
+    env_file:
+      - Service/nacos/.env
+    ports:
+      - "8848:8848"
+      - "9848:9848"
+    networks:
+      - expedition
+  # Web
+  kibana:
+    container_name: kibana
+    image: ${IMAGE_REGISTRY}/${KIBANA_IMAGE_REPOSITORY}:${KIBANA_VERSION}
+#    environment:
+#      - ELASTICSEARCH_HOST=http://elasticsearch:9200
+    env_file:
+      - NoSQL/elastic/.env
+    ports:
+      - "35601:5601"
+    networks:
+      - expedition
+  nginx:
+    container_name: nginx
+    image: ${IMAGE_REGISTRY}/${NGINX_IMAGE_REPOSITORY}:${NGINX_VERSION}
+    env_file:
+      - Service/nginx/.env
+    ports:
+      - "8081:80"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/html:/usr/share/nginx/html
+    networks:
+      - expedition
+# MQ(Kafka)
+  kafka:
+    container_name: kafka
+    image: ${IMAGE_REGISTRY}/${KAFKA_IMAGE_REPOSITORY}:${KAFKA_VERSION}
+    env_file:
+      - MQ/kafka/.env
+    ports:
+      - "9092:9092"
+    volumes:
+      - kafka_data:/logs/kafka-logs
+    networks:
+      - expedition
+# MQ(RabbitMQ)
+  rabbitmq:
+    container_name: rabbitmq
+    image: ${IMAGE_REGISTRY}/${RABBITMQ_IMAGE_REPOSITORY}:${RABBITMQ_VERSION}
+    env_file:
+      - MQ/rabbitmq/.env
+    ports:
+      - "9092:9092"
+    networks:
+      - expedition
+# MQ(RocketMQ)
+  rocketmq:
+    container_name: rocketmq
+    image: ${IMAGE_REGISTRY}/${ROCKETMQ_IMAGE_REPOSITORY}:${ROCKETMQ_VERSION}
+    env_file:
+      - MQ/rocketmq/.env
+    ports:
+      - "9092:9092"
+    networks:
+      - expedition
+#
+
+networks:
+  expedition:
+
+volumes:
+  mysql_data:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ${DATA_PATH}/mysql_data
+  redis_data:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ${DATA_PATH}/redis_data
+  mysql_log:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ${LOGS_PATH}/mysql_log
+  elasticsearch_data:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ${DATA_PATH}/elasticsearch_data
+#    driver_opts:
+  kafka_data:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ${DATA_PATH}/kafka_data
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#  zookeeper:
+#    container_name: zookeeper
+#    image: harbor.xujian.org.cn/arm64/zookeeper:3.7.0
+#    networks:
+#      - expedition
+#  arthas:
+#    container_name: arthas
+#    image: harbor.xujian.org.cn/arm64/arthas-tunnel:4.0.1
+#    ports:
+#      - "37777:7777"
+#      - "32081:8080"
+#    networks:
+#      - expedition
+#  canal-server:
+#    container_name: canal-server
+#    image: ${IMAGE_REGISTRY}/${CANAL_SERVER_IMAGE_REPOSITORY}:${CANAL_VERSION}
+#    env_file:
+#      - canal/.env
+#    networks:
+#      - expedition
+#
+#  canal-admin:
+#    container_name: canal-admin
+#    image: ${IMAGE_REGISTRY}/${CANAL_IMAGE_REPOSITORY}:${CANAL_VERSION}
+#    networks:
+#      - expedition
+#
+#  xxl-job:
+#    container_name: xxl-job
+#    image: harbor.xujian.org.cn/arm64/xxl-job:3.6.1
+#    networks:
+#      - expedition
+#
+#  homeassistant:
+#    container_name: homeassistant
+#    image: "ghcr.io/home-assistant/home-assistant:stable"
+#    volumes:
+#      - /PATH_TO_YOUR_CONFIG:/config
+#      - /etc/localtime:/etc/localtime:ro
+#      - /run/dbus:/run/dbus:ro
+#    ports:
+#      - "8123:8123"
+#    privileged: true
+#
+#  # alibaba nacos, sentinel,
+#  nacos:
+#    container_name: nacos
+#    image: harbor.xujian.org.cn/arm64/nacos-server:3.xxx
+#  sentinel:
+#    container_name: sentinel
+#    image: harbor.xujian.org.cn/arm64/sentinel:xxx
+#  seata:
+#    container_name: seata
+#    image: harbor.xujian.org.cn/arm64/seata:3.3.3
+#  # MQTT, Kafka, RabbitMQ RocketMQ
+#  emqx1:
+#    image: emqx/emqx:5.8.1
+#    container_name: emqx1.xujian.org.cn
+#    environment:
+#      - "EMQX_NODE_NAME=emqx@emqx1.xujian.org.cn"
+#      - "EMQX_CLUSTER__DISCOVERY_STRATEGY=static"
+#      - "EMQX_CLUSTER__STATIC__SEEDS=[emqx@emqx2.xujian.org.cn,emqx@emqx1.xujian.org.cn]"
+#    healthcheck:
+#      test: ["CMD", "/opt/emqx/bin/emqx", "ctl", "status"]
+#      interval: 5s
+#      timeout: 25s
+#      retries: 5
+#    networks:
+#      - project
+##      emqx-bridge:
+##        aliases:
+##          - node1.emqx.io
+#    ports:
+#      - 1883:1883
+#      - 8083:8083
+#      - 8084:8084
+#      - 8883:8883
+#      - 18083:18083
+#    # volumes:
+#    #   - $PWD/emqx1_data:/opt/emqx/data
+#
+#  emqx2:
+#    image: emqx/emqx:5.8.1
+#    container_name: emqx2.xujian.org.cn
+#    environment:
+#      - "EMQX_NODE_NAME=emqx@emqx2.xujian.org.cn"
+#      - "EMQX_CLUSTER__DISCOVERY_STRATEGY=static"
+#      - "EMQX_CLUSTER__STATIC__SEEDS=[emqx@emqx1.xujian.org.cn,emqx@emqx2.xujian.org.cn]"
+#    healthcheck:
+#      test: ["CMD", "/opt/emqx/bin/emqx", "ctl", "status"]
+#      interval: 5s
+#      timeout: 25s
+#      retries: 5
+#    networks:
+#      - project
+#    # volumes:
+#    #   - $PWD/emqx2_data:/opt/emqx/data

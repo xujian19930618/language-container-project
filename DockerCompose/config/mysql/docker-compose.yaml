@@ -1,0 +1,7 @@
+name: MySQL
+services:
+  MySQL:
+    image: mysql:8.0.30
+    container_name: mysql
+networks:
+  mysql:

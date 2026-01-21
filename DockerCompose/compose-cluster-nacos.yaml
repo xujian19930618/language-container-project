@@ -1,3 +1,132 @@
+version: '3.8'
 services:
+  mysql-nacos:
+    container_name: mysql-nacos
+    image: mysql:8.4.1
+    environment:
+      MYSQL_ROOT_PASSWORD: '123456'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'no'
+      MYSQL_DATABASE: 'nacos_config'
+      MYSQL_USER: 'nacos'
+      MYSQL_PASSWORD: 'Nacos@1234'
+    ports:
+      - "3310:3306"
+    volumes:
+      - ./mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      - ./data/nacos/mysql/data:/var/lib/mysql
+    #    restart: always
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 5s
+      timeout: 10s
+      retries: 10
+    networks:
+      - nacos
+  nacos1:
+    container_name: nacos1
+    image: nacos/nacos-server:v2.3.2-slim
+    volumes:
+      - ./data/nacos/nacos1/logs:/home/nacos/logs
+    environment:
+      PREFER_HOST_MODE: hostname
+      MODE: cluster
+      SPRING_DATASOURCE_PLATFORM: mysql
+      NACOS_SERVERS: nacos1:8848 nacos2:8848 nacos3:8848
+      MYSQL_SERVICE_HOST: mysql-nacos
+      MYSQL_SERVICE_DB_NAME: nacos_config
+      MYSQL_SERVICE_PORT: 3306
+      MYSQL_SERVICE_USER: nacos
+      MYSQL_SERVICE_PASSWORD: Nacos@1234
+      MYSQL_SERVICE_DB_PARAM: characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
+    #    restart: always
+    depends_on:
+      mysql-nacos:
+        condition: service_healthy
+    networks:
+      - nacos
+  nacos2:
+    container_name: nacos2
+    image: nacos/nacos-server:v2.3.2-slim
+    volumes:
+      - ./data/nacos/nacos2/logs:/home/nacos/logs
+    environment:
+      PREFER_HOST_MODE: hostname
+      MODE: cluster
+      SPRING_DATASOURCE_PLATFORM: mysql
+      NACOS_SERVERS: nacos1:8848 nacos2:8848 nacos3:8848
+      MYSQL_SERVICE_HOST: mysql-nacos
+      MYSQL_SERVICE_DB_NAME: nacos_config
+      MYSQL_SERVICE_PORT: 3306
+      MYSQL_SERVICE_USER: nacos
+      MYSQL_SERVICE_PASSWORD: Nacos@1234
+      MYSQL_SERVICE_DB_PARAM: characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
+    #    restart: always
+    depends_on:
+      mysql-nacos:
+        condition: service_healthy
+    networks:
+      - nacos
+  nacos3:
+    container_name: nacos3
+    image: nacos/nacos-server:v2.3.2-slim
+    volumes:
+      - ./data/nacos/nacos3/logs:/home/nacos/logs
+    environment:
+      PREFER_HOST_MODE: hostname
+      MODE: cluster
+      SPRING_DATASOURCE_PLATFORM: mysql
+      NACOS_SERVERS: nacos1:8848 nacos2:8848 nacos3:8848
+      MYSQL_SERVICE_HOST: mysql-nacos
+      MYSQL_SERVICE_DB_NAME: nacos_config
+      MYSQL_SERVICE_PORT: 3306
+      MYSQL_SERVICE_USER: nacos
+      MYSQL_SERVICE_PASSWORD: Nacos@1234
+      MYSQL_SERVICE_DB_PARAM: characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
+    #    restart: always
+    depends_on:
+      mysql-nacos:
+        condition: service_healthy
+    networks:
+      - nacos
+  nacos4:
+    container_name: nacos4
+    image: nacos/nacos-server:v2.3.2-slim
+    volumes:
+      - ./data/nacos/nacos4/logs:/home/nacos/logs
+    ports:
+      - "8849:8848"
+      - "9849:9848"
+    environment:
+      PREFER_HOST_MODE: hostname
+      MODE: standalone
+      SPRING_DATASOURCE_PLATFORM: mysql
+      MYSQL_SERVICE_HOST: mysql-nacos
+      MYSQL_SERVICE_DB_NAME: ry-config
+      MYSQL_SERVICE_PORT: 3306
+      MYSQL_SERVICE_USER: root
+      MYSQL_SERVICE_PASSWORD: 123456
+      MYSQL_SERVICE_DB_PARAM: characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
+    #    restart: always
+    depends_on:
+      mysql-nacos:
+        condition: service_healthy
+    networks:
+      - nacos
+  nacos-nginx:
+    container_name: nacos-nginx
+    image: nginx:latest
+    ports:
+      - "8848:8848"
+      - "9848:9848"
+    links:
+      - nacos1:nacos1
+      - nacos2:nacos2
+      - nacos3:nacos3
+    volumes:
+      - ./nacos-nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./data/nacos/nacos-nginx/log:/var/log/nginx
+    #    restart: always
+    networks:
+      - nacos
+networks:
   nacos:
-    container_name: nacos

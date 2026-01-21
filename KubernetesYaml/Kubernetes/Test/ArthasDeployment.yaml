@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: arthas-deploy
+  labels:
+    app: arthas-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: arthas-deploy
+  template:
+    metadata:
+      name: arthas-deploy
+      labels:
+        app: arthas-deploy
+    spec:
+      containers:
+        - name: arthas-deploy
+          image: harbor.iufc.cn/library/openjdk:21-jdk
+          command:
+            - sleep 37000
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+              protocol: TCP
+      restartPolicy: Always
+      

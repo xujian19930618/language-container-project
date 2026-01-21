@@ -1,0 +1,14 @@
+name: shardingsphere
+services:
+  shardingsphere:
+    image: apache/shardingsphere-proxy:5.5.2
+    container_name: shardingsphere
+    volumes:
+      - ./conf:/opt/shardingsphere-proxy/conf
+      - ./ext-lib:/opt/shardingsphere-proxy/ext-lib
+    ports:
+      - "3307:3307"
+    networks:
+      - shardingsphere
+networks:
+  shardingsphere:
