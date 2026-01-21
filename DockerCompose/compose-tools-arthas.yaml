@@ -1,0 +1,29 @@
+name: Arthas
+services:
+  arthas:
+    image: openjdk:21-jdk
+    container_name: arthas
+    volumes:
+      - ./arthas:/opt/arthas
+    command:
+      - java
+#      - -javaagent:/opt/arthas/arthas-agent.jar
+      - -jar
+      - /opt/arthas/math-game.jar
+    networks:
+      - arthas
+  tunnel:
+    image: openjdk:21-jdk
+    container_name: tunnel
+    volumes:
+      - ./tunnel:/opt/tunnel
+    ports:
+      - "8080:8080"
+    command:
+      - java
+      - -jar
+      - /opt/tunnel/arthas-tunnel-server-4.0.5-fatjar.jar
+    networks:
+      - arthas
+networks:
+  arthas:

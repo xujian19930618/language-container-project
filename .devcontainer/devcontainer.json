@@ -1,0 +1,4 @@
+{
+  "name": "docker",
+  "image": "ubuntu:24.04",
+}

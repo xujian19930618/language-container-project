@@ -1,0 +1,17 @@
+name: jenkins
+services:
+  jenkins:
+    container_name: jenkins
+    image:  jenkins/jenkins:jdk21
+    privileged: true
+    user: root
+    volumes:
+      - ../data/jenkins-data:/var/jenkins_home
+    #    environment:
+    #      JENKINS_OPTS: "--prefix=/jenkins"
+    ports:
+      - "8088:8080"
+    networks:
+      - jenkins
+networks:
+  jenkins:

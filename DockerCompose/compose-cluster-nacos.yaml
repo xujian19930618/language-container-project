@@ -1,0 +1,3 @@
+services:
+  nacos:
+    container_name: nacos

@@ -1,0 +1,6 @@
+abcd@1234
+
+podman run --name oracle \
+  -v ./Oracle/pwdfile.enc:/secret/oracle_pwd:ro \
+  -v ./Oracle/key.pub:/run/secrets/oracle_pwd_priv_key:ro  \
+   container-registry.oracle.com/database/free:23.26.0.0-arm64

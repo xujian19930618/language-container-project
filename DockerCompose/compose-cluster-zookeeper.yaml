@@ -1,0 +1,58 @@
+name: zookeeper
+services:
+  zookeeper1:
+    container_name: zookeeper1
+    image: zookeeper:latest
+    ports:
+      - "2182:2181" # 对cline端提供服务
+    #      - "2888:2888" # 集群内机器通讯使用（Leader监听此端口）
+    #      - "3888:3888" # 选举leader使用
+    #      - "8080:8080" # http://localhost:8080/commands/stats
+    environment:
+      ZOO_MY_ID: 1
+      ZOO_SERVERS: server.1=zookeeper1:2888:3888;2181 server.2=zookeeper2:2888:3888;2181 server.3=zookeeper3:2888:3888;2181
+    #    volumes:
+    #      - ../data/zookeeper/data:/data
+    #      - ../data/zookeeper/datalog:/datalog
+    #      - ../data/zookeeper/logs:/logs
+    #    restart: always
+    networks:
+      - zookeeper
+  zookeeper2:
+    container_name: zookeeper2
+    image: zookeeper:latest
+    ports:
+      - "2183:2181" # 对cline端提供服务
+    #      - "2888:2888" # 集群内机器通讯使用（Leader监听此端口）
+    #      - "3888:3888" # 选举leader使用
+    #      - "8080:8080" # http://localhost:8080/commands/stats
+    environment:
+      ZOO_MY_ID: 2
+      ZOO_SERVERS: server.1=zookeeper1:2888:3888;2181 server.2=zookeeper2:2888:3888;2181 server.3=zookeeper3:2888:3888;2181
+    #    volumes:
+    #      - ../data/zookeeper/data:/data
+    #      - ../data/zookeeper/datalog:/datalog
+    #      - ../data/zookeeper/logs:/logs
+    #    restart: always
+    networks:
+      - zookeeper
+  zookeeper3:
+    container_name: zookeeper3
+    image: zookeeper:latest
+    ports:
+      - "2184:2181" # 对cline端提供服务
+    #      - "2888:2888" # 集群内机器通讯使用（Leader监听此端口）
+    #      - "3888:3888" # 选举leader使用
+    #      - "8080:8080" # http://localhost:8080/commands/stats
+    environment:
+      ZOO_MY_ID: 3
+      ZOO_SERVERS: server.1=zookeeper1:2888:3888;2181 server.2=zookeeper2:2888:3888;2181 server.3=zookeeper3:2888:3888;2181
+    #    volumes:
+    #      - ../data/zookeeper/data:/data
+    #      - ../data/zookeeper/datalog:/datalog
+    #      - ../data/zookeeper/logs:/logs
+    #    restart: always
+    networks:
+      - zookeeper
+networks:
+  zookeeper:

@@ -1,0 +1,3 @@
+services:
+  activemq:
+    container_name: activemq

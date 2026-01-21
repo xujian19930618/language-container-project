@@ -1,0 +1,67 @@
+name: emqx
+
+services:
+  emqx1:
+    image: emqx/emqx-enterprise:5.10.0
+    container_name: emqx1
+    environment:
+      - "EMQX_NODE_NAME=emqx@exmq1.xujian.org.cn"
+      - "EMQX_CLUSTER__DISCOVERY_STRATEGY=static"
+      - "EMQX_CLUSTER__STATIC__SEEDS=[emqx@exmq1.xujian.org.cn,emqx@exmq2.xujian.org.cn,emqx@exmq3.xujian.org.cn]"
+    healthcheck:
+      test: ["CMD", "/opt/emqx/bin/emqx", "ctl", "status"]
+      interval: 5s
+      timeout: 25s
+      retries: 5
+    networks:
+      emqx:
+        aliases:
+          - exmq1.xujian.org.cn
+    ports:
+      - 1883:1883
+      - 8083:8083
+      - 8084:8084
+      - 8883:8883
+      - 18083:18083
+    # volumes:
+    #   - $PWD/emqx1_data:/opt/emqx/data
+
+  emqx2:
+    image: emqx/emqx-enterprise:5.10.0
+    container_name: emqx2
+    environment:
+      - "EMQX_NODE_NAME=emqx@exmq2.xujian.org.cn"
+      - "EMQX_CLUSTER__DISCOVERY_STRATEGY=static"
+      - "EMQX_CLUSTER__STATIC__SEEDS=[emqx@exmq1.xujian.org.cn,emqx@exmq2.xujian.org.cn,emqx@exmq3.xujian.org.cn]"
+    healthcheck:
+      test: ["CMD", "/opt/emqx/bin/emqx", "ctl", "status"]
+      interval: 5s
+      timeout: 25s
+      retries: 5
+    networks:
+      emqx:
+        aliases:
+          - exmq2.xujian.org.cn
+    # volumes:
+    #   - $PWD/emqx2_data:/opt/emqx/data5
+  emqx3:
+    image: emqx/emqx-enterprise:5.10.0
+    container_name: emqx3
+    environment:
+      - "EMQX_NODE_NAME=emqx@exmq3.xujian.org.cn"
+      - "EMQX_CLUSTER__DISCOVERY_STRATEGY=static"
+      - "EMQX_CLUSTER__STATIC__SEEDS=[emqx@exmq1.xujian.org.cn,emqx@exmq2.xujian.org.cn,emqx@exmq3.xujian.org.cn]"
+    healthcheck:
+      test: ["CMD", "/opt/emqx/bin/emqx", "ctl", "status"]
+      interval: 5s
+      timeout: 25s
+      retries: 5
+    networks:
+      emqx:
+        aliases:
+          - exmq3.xujian.org.cn
+    # volumes:
+    #   - $PWD/emqx2_data:/opt/emqx/data
+networks:
+  emqx:
+    driver: bridge

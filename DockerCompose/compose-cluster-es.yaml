@@ -1,0 +1,3 @@
+services:
+  es:
+    container_name: es

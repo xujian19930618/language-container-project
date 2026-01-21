@@ -1,0 +1,141 @@
+services:
+  redis-cluster-01:
+    container_name: redis-cluster-01
+    image: redis:8.4.0-bookworm
+    volumes:
+      - ./config/cluster/redis-cluster/01:/redis
+      - ./data/redis-cluster/01:/data
+    ports:
+      - "63791:6379"
+    command:
+      - /redis/redis.conf
+    networks:
+      - redis-cluster
+    healthcheck:
+#      test: [ "CMD", "redis-cli", "-a", "redis123", "ping" ]
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+  redis-cluster-02:
+    container_name: redis-cluster-02
+    image: redis:8.4.0-bookworm
+    volumes:
+      - ./config/cluster/redis-cluster/02:/redis
+      - ./data/redis-cluster/02:/data
+    ports:
+      - "63792:6379"
+    command:
+      - /redis/redis.conf
+    networks:
+      - redis-cluster
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+  redis-cluster-03:
+    container_name: redis-cluster-03
+    image: redis:8.4.0-bookworm
+    volumes:
+      - ./config/cluster/redis-cluster/03:/redis
+      - ./data/redis-cluster/03:/data
+    ports:
+      - "63793:6379"
+    command:
+      - /redis/redis.conf
+    networks:
+      - redis-cluster
+    healthcheck:
+      test: [ "CMD", "redis-cli","ping" ]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+  redis-cluster-04:
+    container_name: redis-cluster-04
+    image: redis:8.4.0-bookworm
+    volumes:
+      - ./config/cluster/redis-cluster/04:/redis
+      - ./data/redis-cluster/04:/data
+    ports:
+      - "63794:6379"
+    command:
+      - /redis/redis.conf
+    networks:
+      - redis-cluster
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+  redis-cluster-05:
+    container_name: redis-cluster-05
+    image: redis:8.4.0-bookworm
+    volumes:
+      - ./config/cluster/redis-cluster/05:/redis
+      - ./data/redis-cluster/05:/data
+    ports:
+      - "63795:6379"
+    command:
+      - /redis/redis.conf
+    networks:
+      - redis-cluster
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+  redis-cluster-06:
+    container_name: redis-cluster-06
+    image: redis:8.4.0-bookworm
+    volumes:
+      - ./config/cluster/redis-cluster/06:/redis
+      - ./data/redis-cluster/06:/data
+    ports:
+      - "63796:6379"
+    command:
+      - /redis/redis.conf
+    networks:
+      - redis-cluster
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+  redis-cluster:
+    container_name: redis-cluster
+    image: redis:8.4.0-bookworm
+    command:
+      - "redis-cli"
+      - "--cluster"
+      - "create"
+      - "--cluster-replicas"
+      - "1"
+      - "redis-cluster-01:6379"
+      - "redis-cluster-02:6379"
+      - "redis-cluster-03:6379"
+      - "redis-cluster-04:6379"
+      - "redis-cluster-05:6379"
+      - "redis-cluster-06:6379"
+      - "--cluster-yes"
+      - "-a"
+      - "redis@1234"
+    depends_on:
+      redis-cluster-01:
+        condition: service_healthy
+      redis-cluster-02:
+        condition: service_healthy
+      redis-cluster-03:
+        condition: service_healthy
+      redis-cluster-04:
+        condition: service_healthy
+      redis-cluster-05:
+        condition: service_healthy
+      redis-cluster-06:
+        condition: service_healthy
+    networks:
+      - redis-cluster
+
+networks:
+  redis-cluster:
+    driver: bridge

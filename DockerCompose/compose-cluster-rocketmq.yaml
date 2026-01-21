@@ -1,0 +1,3 @@
+services:
+  rocketmq:
+    container_name: rocketmq
