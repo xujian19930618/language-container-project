@@ -1,5 +1,4 @@
 name: emqx
-
 services:
   emqx1:
     image: emqx/emqx-enterprise:5.10.0

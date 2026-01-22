@@ -1,3 +1,24 @@
 services:
   mysql:
     container_name: mysql
+
+#  mysql:
+#    container_name: mysql
+#    image: ${MYSQL_IMAGE}
+#    privileged: true
+#    env_file:
+#      - ../.env
+#    ports:
+#      - "33306:3306"
+#    volumes:
+#      - ./Config/MySQL/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+#      #      - ./Config/MySQL/conf.d:/etc/mysql/conf.d
+#      - ./Data/MySQL/log:/var/log/mysql
+#      - ./Data/MySQL/data:/var/lib/mysql
+#    healthcheck:
+#      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+#      interval: 5s
+#      timeout: 10s
+#      retries: 10
+#    networks:
+#      - develop

@@ -8,3 +8,26 @@ services:
       POSTGRES_DB: postgres
     ports:
       - 5432:5432
+
+#  postgresql:
+#    container_name: postgresql
+#    image: postgres:14.19-alpine3.21
+#    privileged: true
+#    volumes:
+#      - ./PostgreSQL/data:/var/lib/postgresql/data
+#      - ./Config/PostgreSQL/init:/docker-entrypoint-initdb.d
+#    environment:
+#      POSTGRES_USER: postgres
+#      POSTGRES_PASSWORD: root
+#      POSTGRES_DB: postgres
+#      PGDATA: /var/lib/postgresql/data/pgdata
+#    healthcheck:
+#      test: ["CMD-SHELL", "pg_isready -U postgres"]
+#      interval: 5s
+#      timeout: 10s
+#      retries: 10
+#    ports:
+#      - "35432:5432"
+#    networks:
+#      - develop
+

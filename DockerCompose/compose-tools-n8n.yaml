@@ -1,0 +1,16 @@
+name: n8n
+services:
+  ## N8N
+  n8n:
+    container_name: n8n
+    image: docker.n8n.io/n8nio/n8n
+    ports:
+      - "5678:5678"
+    volumes:
+      - ./N8N:/home/node/.n8n
+    networks:
+      - n8n
+networks:
+  n8n:
+    driver: bridge
+
