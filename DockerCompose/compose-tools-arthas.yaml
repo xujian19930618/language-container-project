@@ -27,3 +27,4 @@ services:
       - arthas
 networks:
   arthas:
+    driver: bridge

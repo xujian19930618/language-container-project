@@ -1,5 +1,4 @@
 name: hadoop
-
 services:
   zookeeper:
     image: registry.cn-hangzhou.aliyuncs.com/bigdata_cloudnative/hadoop-ha:v1

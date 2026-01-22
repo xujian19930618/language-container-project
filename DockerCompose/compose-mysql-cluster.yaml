@@ -1,24 +1,35 @@
+name: mysql
 services:
+  # MySQL
+  mysql-master:
+    image: mysql:8.4.1
+    container_name: mysql-master
+    environment:
+      MYSQL_ROOT_PASSWORD: '123456'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'no'
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./data/mysql/master/data:/var/lib/mysql
+      - ./data/mysql/master/log:/var/log/mysql
+      - ./mysql/master/conf.d:/etc/mysql/conf.d
+    networks:
+      - mysql
+  # MySQL
+  mysql-slave:
+    image: mysql:8.4.1
+    container_name: mysql-slave
+    environment:
+      MYSQL_ROOT_PASSWORD: '123456'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'no'
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./data/mysql/slave/data:/var/lib/mysql
+      - ./data/mysql/slave/log:/var/log/mysql
+      - ./config/mysql/slave/conf.d:/etc/mysql/conf.d
+    networks:
+      - mysql
+networks:
   mysql:
-    container_name: mysql
 
-#  mysql:
-#    container_name: mysql
-#    image: ${MYSQL_IMAGE}
-#    privileged: true
-#    env_file:
-#      - ../.env
-#    ports:
-#      - "33306:3306"
-#    volumes:
-#      - ./Config/MySQL/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
-#      #      - ./Config/MySQL/conf.d:/etc/mysql/conf.d
-#      - ./Data/MySQL/log:/var/log/mysql
-#      - ./Data/MySQL/data:/var/lib/mysql
-#    healthcheck:
-#      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
-#      interval: 5s
-#      timeout: 10s
-#      retries: 10
-#    networks:
-#      - develop

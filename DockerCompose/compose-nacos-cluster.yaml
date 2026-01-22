@@ -12,7 +12,7 @@ services:
     ports:
       - "3310:3306"
     volumes:
-      - ./mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      - ./config/nacos/mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
       - ./data/nacos/mysql/data:/var/lib/mysql
     #    restart: always
     healthcheck:

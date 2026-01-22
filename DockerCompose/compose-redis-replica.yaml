@@ -1,4 +1,4 @@
-#name: 主从
+name: replica
 version: '3.8'
 services:
   redis-master:
@@ -7,20 +7,14 @@ services:
     ports:
       - "6391:6379"
     networks:
-      - Redis
+      - replica
   redis-slave1:
-    container_name: redis-slave1
+    container_name: redis-slave
     image: redis:7.2.5
     ports:
       - "6392:6379"
     networks:
-      - Redis
-  redis-slave2:
-    container_name: redis-slave2
-    image: redis:7.2.5
-    ports:
-      - "6393:6379"
-    networks:
-      - Redis
+      - replica
 networks:
-  Redis:
+  replica:
+    driver: bridge

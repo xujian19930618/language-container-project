@@ -19,7 +19,7 @@ binlog_format=STATEMENT
 ```
 
 ```mysql
-# slave1
+# slave
 [mysqld]
 # 服务器唯一id，默认值1
 server-id=2
@@ -73,16 +73,16 @@ mysql:latest
 ```
 
 ```shell
-# slave1
+# slave
 docker run -d \
 -p 3309:3306 \
 -p 33090:33060 \
--v /Users/xujian/Docker/mysql/slave1/conf.d:/etc/mysql/conf.d \
--v /Users/xujian/Docker/mysql/slave1/data:/var/lib/mysql \
+-v /Users/xujian/Docker/mysql/slave/conf.d:/etc/mysql/conf.d \
+-v /Users/xujian/Docker/mysql/slave/data:/var/lib/mysql \
 -e MYSQL_ROOT_PASSWORD=123456 \
 --network MySQL \
 --ip 192.168.10.12 \
---name mysql-slave1 \
+--name mysql-slave \
 mysql:latest
 ```
 

@@ -56,3 +56,4 @@ services:
       - zookeeper
 networks:
   zookeeper:
+    driver: bridge

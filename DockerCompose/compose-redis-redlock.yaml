@@ -37,3 +37,4 @@ services:
       - redlock
 networks:
   redlock:
+    driver: bridge
