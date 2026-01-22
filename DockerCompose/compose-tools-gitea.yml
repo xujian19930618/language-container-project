@@ -1,8 +1,4 @@
-version: "3"
-
-networks:
-  gitea:
-    external: false
+name: gitea
 
 services:
   server:
@@ -40,3 +36,9 @@ services:
       - gitea
     volumes:
       - ./data/mysql:/var/lib/mysql
+
+
+networks:
+  gitea:
+    external: false
+    driver: bridge

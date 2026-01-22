@@ -1,3 +1,11 @@
+name: rabbitmq
 services:
   rabbitmq:
     container_name: rabbitmq
+    networks:
+      - rabbitmq
+
+
+networks:
+  rabbitmq:
+    driver: bridge

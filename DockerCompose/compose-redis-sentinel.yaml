@@ -3,3 +3,7 @@ name: sentinel
 services:
   sentinel:
     image: xxx
+
+networks:
+  sentinel:
+    driver: bridge

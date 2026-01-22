@@ -1,3 +1,4 @@
+name: pgsql
 services:
   postgres:
     image: postgres:latest
@@ -8,6 +9,13 @@ services:
       POSTGRES_DB: postgres
     ports:
       - 5432:5432
+    networks:
+      pgsql:
+
+networks:
+  pgsql:
+    driver: bridge
+
 
 #  postgresql:
 #    container_name: postgresql

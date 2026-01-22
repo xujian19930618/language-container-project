@@ -30,6 +30,8 @@ services:
       - ./config/mysql/slave/conf.d:/etc/mysql/conf.d
     networks:
       - mysql
+
 networks:
   mysql:
+    driver: bridge
 

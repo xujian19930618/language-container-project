@@ -1,4 +1,5 @@
 # Redis redlock 红锁
+name: redlock
 services:
   redlock-01:
     container_name: redlock-01

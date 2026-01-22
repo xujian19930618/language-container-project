@@ -5,3 +5,8 @@ services:
     volumes:
       - /Users/xujian/Kernel:/Kernel
     entrypoint: ["sleep", "36000"]  # 保持容器运行
+
+
+networks:
+  kernel:
+    driver: bridge

@@ -128,5 +128,8 @@ services:
     #    restart: always
     networks:
       - nacos
+
 networks:
   nacos:
+    driver: bridge
+

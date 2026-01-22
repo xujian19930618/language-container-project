@@ -1,4 +1,4 @@
-name: Arthas
+name: arthas
 services:
   arthas:
     image: openjdk:21-jdk

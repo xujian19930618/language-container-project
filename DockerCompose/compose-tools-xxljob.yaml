@@ -1,4 +1,4 @@
-version: "3"
+name: xxljob
 services:
   xxl-job:
     container_name: xxl-job

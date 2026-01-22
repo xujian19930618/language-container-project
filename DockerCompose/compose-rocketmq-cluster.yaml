@@ -2,3 +2,7 @@ name: rocketmq
 services:
   rocketmq:
     container_name: rocketmq
+
+networks:
+  rocketmq:
+    driver: bridge

@@ -5,3 +5,8 @@ services:
     volumes:
       - /Users/xujian/stm32:/root/stm32
     entrypoint: ["sleep", "36000"]  # 保持容器运行
+
+
+networks:
+  stm32:
+    driver: bridge
