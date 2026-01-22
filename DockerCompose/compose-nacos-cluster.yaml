@@ -1,4 +1,4 @@
-version: '3.8'
+name: nacos
 services:
   mysql-nacos:
     container_name: mysql-nacos
