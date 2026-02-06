@@ -4,13 +4,14 @@ services:
     container_name: nginx
     image: nginx:stable-perl
     volumes:
-      - ./Config/nginx/conf.d:/etc/nginx/conf.d
-      - ./Config/nginx/html:/usr/share/nginx/html
+      - ./config/nginx/conf.d:/etc/nginx/conf.d
+      - ./config/nginx/html:/usr/share/nginx/html
     #    restart: always
 #    expose:
 #      - "30080:80"
     ports:
       - "30080:80"
+      - "30443:443"
     deploy:
       replicas: 1
     networks:
