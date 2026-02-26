@@ -16,6 +16,19 @@ services:
       replicas: 1
     networks:
       - nginx
+  openjdk:
+    container_name: openjdk
+    image: openjdk:25-rc-jdk
+    volumes:
+      - ./config/openjdk:/opt/openjdk
+    command:
+      - java
+      - -jar
+      - /opt/openjdk/demo-0.0.1-SNAPSHOT.jar
+    ports:
+      - "8081:8080"
+    networks:
+      - nginx
 networks:
   nginx:
     driver: bridge
