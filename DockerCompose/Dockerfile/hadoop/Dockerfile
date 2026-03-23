@@ -1,11 +1,11 @@
 # ARM64 原生 OpenJDK 17
-FROM --platform=linux/arm64 openjdk:17-slim-bullseye
+FROM --platform=linux/arm64 openjdk:17.0.2-slim
 
-ARG HADOOP_VERSION=3.3.6
+ARG HADOOP_VERSION=3.4.3
 
 # 安装依赖工具（编译 + 运行）
 RUN apt-get update && apt-get install -y \
-    curl wget ssh rsync vim net-tools iputils-ping maven python3 git \
+    curl wget ssh rsync vim net-tools python3 git --fix-missing \
     && rm -rf /var/lib/apt/lists/*
 
 # 下载 Hadoop 官方二进制包

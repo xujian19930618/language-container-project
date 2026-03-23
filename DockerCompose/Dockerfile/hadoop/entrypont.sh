@@ -4,10 +4,10 @@ set -e
 ROLE=${ROLE:-bash}
 
 # Hadoop 配置文件使用官方模板
-cp $HADOOP_HOME/etc/hadoop/core-site.xml.template $HADOOP_HOME/etc/hadoop/core-site.xml
-cp $HADOOP_HOME/etc/hadoop/hdfs-site.xml.template $HADOOP_HOME/etc/hadoop/hdfs-site.xml
-cp $HADOOP_HOME/etc/hadoop/yarn-site.xml.template $HADOOP_HOME/etc/hadoop/yarn-site.xml
-cp $HADOOP_HOME/etc/hadoop/mapred-site.xml.template $HADOOP_HOME/etc/hadoop/mapred-site.xml
+#cp $HADOOP_HOME/etc/hadoop/core-site.xml $HADOOP_HOME/etc/hadoop/core-site.xml
+#cp $HADOOP_HOME/etc/hadoop/hdfs-site.xml $HADOOP_HOME/etc/hadoop/hdfs-site.xml
+#cp $HADOOP_HOME/etc/hadoop/yarn-site.xml $HADOOP_HOME/etc/hadoop/yarn-site.xml
+#cp $HADOOP_HOME/etc/hadoop/mapred-site.xml $HADOOP_HOME/etc/hadoop/mapred-site.xml
 
 # 启动 SSH 服务
 service ssh start
