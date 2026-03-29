@@ -1,7 +1,7 @@
 name: oracle
 services:
   oracle:
-    image: oracle:xxx
+    image: database/free:23.26.0.0-arm64
 
 networks:
   oracle:
