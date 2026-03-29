@@ -25,6 +25,15 @@ services:
       - /opt/tunnel/arthas-tunnel-server-4.0.5-fatjar.jar
     networks:
       - arthas
+#  tunnel_server:
+#    container_name: tunnel_server
+#    image: tunnel-tunnel-server:4.0.5
+#    build:
+#      context: ./Dockerfile
+#      dockerfile: arthas.dockerfile
+#    networks:
+#      - arthas
+
 networks:
   arthas:
     driver: bridge

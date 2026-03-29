@@ -1,0 +1,17 @@
+name: license
+services:
+  gcc:
+    container_name: gcc
+    image: fedora:44
+    volumes:
+      - ./data/license/gcc:/data
+    command:
+      - tail
+      - -f
+      - /dev/null
+    networks:
+      - license
+
+
+networks:
+  license:
