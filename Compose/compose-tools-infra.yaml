@@ -11,3 +11,5 @@ services:
     networks:
       - infra
     restart: always
+    profiles:
+      - infra
