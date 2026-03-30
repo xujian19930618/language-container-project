@@ -1,0 +1,8 @@
+name: xujian
+
+include:
+  - compose-tools-gitea.yml
+
+networks:
+  infra:
+    driver: bridge
