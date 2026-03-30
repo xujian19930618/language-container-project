@@ -1,0 +1,13 @@
+
+services:
+  postgres:
+    image: docker.io/library/postgres:16.13
+    environment:
+      - POSTGRES_USER=gitea
+      - POSTGRES_PASSWORD=gitea
+      - POSTGRES_DB=gitea
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - infra
+    restart: always

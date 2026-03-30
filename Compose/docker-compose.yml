@@ -1,0 +1,17 @@
+version: '3.8'
+include:
+  - compose-tools-infra.yaml
+  - compose-tools-gitea.yaml
+
+networks:
+  infra:
+    external: false
+    driver: bridge
+
+volumes:
+  gitea-data:
+    driver: local
+  gitea-config:
+    driver: local
+  postgres-data:
+    driver: local
