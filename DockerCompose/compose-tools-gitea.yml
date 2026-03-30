@@ -10,7 +10,6 @@ volumes:
 
 services:
   server:
-    container_name: gitea
     image: docker.gitea.com/gitea:1.25.5-rootless
     environment:
       - GITEA__database__DB_TYPE=postgres
