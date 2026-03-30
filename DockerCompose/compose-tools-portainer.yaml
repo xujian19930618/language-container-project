@@ -3,6 +3,11 @@ name: jenkins
 volumes:
   portainer-data:
     driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./data
+
 
 services:
   portainer:
