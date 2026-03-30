@@ -3,22 +3,10 @@ name: gitea
 volumes:
   gitea-data:
     driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: ./gitea/data
   gitea-config:
     driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: ./gitea/config
   postgres-data:
     driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: ./postgres/data
 
 services:
   server:
