@@ -8,9 +8,17 @@ volumes:
       o: bind
       device: /volume1/Docker/Gitea/data
   gitea-config:
-    driver: /volume1/Docker/Gitea/config
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /volume1/Docker/Gitea/config
   postgres-data:
-    driver: /volume1/Docker/Postgres/Data
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /volume1/Docker/Postgres/Data
 
 services:
   server:
