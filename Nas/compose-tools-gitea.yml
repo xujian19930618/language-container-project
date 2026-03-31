@@ -60,3 +60,4 @@ networks:
   gitea:
     external: false
     driver: bridge
+# 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
