@@ -6,19 +6,19 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: /volume1/Docker/Gitea/data
+      device: ./Gitea/data
   gitea-config:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: /volume1/Docker/Gitea/config
+      device: ./Gitea/config
   postgres-data:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: /volume1/Docker/Postgres/Data
+      device: ./Postgres/data
 
 services:
   server:
