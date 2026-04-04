@@ -1,0 +1,24 @@
+version: '3.8'
+
+volumes:
+  register-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /volume1/Docker/Registry/data
+
+
+services:
+  register:
+    container_name: register
+    image: registry:3.0.0
+    volumes:
+      - register-data:/var/lib/registry
+    ports:
+      - "5000:5000"
+    networks:
+      - register
+networks:
+  register:
+    driver: bridge
