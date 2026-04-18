@@ -1,9 +1,8 @@
-FROM openjdk:21-ea-jdk
+FROM openjdk:21-jdk
 
 USER root
 
 ENV PARAM="-Xms256m -Xmx256m"
-
 WORKDIR /opt/arthas
 
 # 下载 arthas tunnel server
@@ -11,7 +10,6 @@ RUN curl -L --fail --create-dirs \
     -o /opt/arthas/arthas-tunnel-server.jar \
     https://github.com/alibaba/arthas/releases/download/arthas-all-4.1.1/arthas-tunnel-server-4.1.1-fatjar.jar
 
-# RUN curl -L -o arthas-boot.zip 'https://arthas.aliyun.com/download/latest_version?mirror=aliyun'
 EXPOSE 8080 7777
 
 ENTRYPOINT ["/bin/sh", "-c", "java -jar /opt/arthas/arthas-tunnel-server.jar $PARAM"]

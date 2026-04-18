@@ -1,35 +1,45 @@
 name: arthas
 services:
   arthas:
-    image: openjdk:21-jdk
+    image: openjdk:21-ea-jdk
     container_name: arthas
     volumes:
-      - ./arthas:/opt/arthas
+      - ./data/arthas:/opt/arthas
     command:
-      - java
+      - tail
+      - -f
+      - /dev/null
+
+      #    build:
+      #      context: ./Dockerfile
+      #      dockerfile: ./Dockerfile/arthas.dockerfile
+#      - java
       #      - -javaagent:/opt/arthas/arthas-agent.jar
-      - -jar
-      - /opt/arthas/math-game.jar
+#      - -jar
+#      - /opt/arthas/math-game.jar
     networks:
       - arthas
   tunnel:
-    image: openjdk:21-jdk
+    image: openjdk:21-ea-jdk
     container_name: tunnel
     volumes:
-      - ./tunnel:/opt/tunnel
+      - ./data/tunnel:/opt/tunnel
     ports:
       - "8080:8080"
     command:
-      - java
-      - -jar
-      - /opt/tunnel/arthas-tunnel-server-4.0.5-fatjar.jar
+      - tail
+      - -f
+      - /dev/null
+#      - java
+#      - -jar
+#      - /opt/tunnel/arthas-tunnel-server-4.0.5-fatjar.jar
     networks:
       - arthas
 #  tunnel_server:
 #    container_name: tunnel_server
 #    image: tunnel-tunnel-server:4.0.5
 #    build:
-#      context: ./Dockerfile
+#      context: ./Dockerfile  # 目录
 #      dockerfile: arthas.dockerfile
 #    networks:
 #      - arthas
