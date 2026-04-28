@@ -1,48 +1,44 @@
 name: arthas
-services:
-  arthas:
-    image: openjdk:21-ea-jdk
-    container_name: arthas
-    volumes:
-      - ./data/arthas:/opt/arthas
-    command:
-      - tail
-      - -f
-      - /dev/null
 
-      #    build:
-      #      context: ./Dockerfile
-      #      dockerfile: ./Dockerfile/arthas.dockerfile
-#      - java
-      #      - -javaagent:/opt/arthas/arthas-agent.jar
-#      - -jar
-#      - /opt/arthas/math-game.jar
-    networks:
-      - arthas
-  tunnel:
-    image: openjdk:21-ea-jdk
-    container_name: tunnel
+services:
+
+  app:
+    image: eclipse-temurin:17-jdk
+    working_dir: /app
     volumes:
-      - ./data/tunnel:/opt/tunnel
-    ports:
-      - "8080:8080"
-    command:
-      - tail
-      - -f
-      - /dev/null
-#      - java
-#      - -jar
-#      - /opt/tunnel/arthas-tunnel-server-4.0.5-fatjar.jar
+      - ./data/arthas/math-game.jar:/app/math-game.jar:ro
+    command: ["java", "-jar", "/app/math-game.jar"]
+    pid: "host"
     networks:
       - arthas
-#  tunnel_server:
-#    container_name: tunnel_server
-#    image: tunnel-tunnel-server:4.0.5
-#    build:
-#      context: ./Dockerfile  # 目录
-#      dockerfile: arthas.dockerfile
-#    networks:
-#      - arthas
+
+  arthas:
+    build:
+      context: .
+      dockerfile: Dockerfile/arthas/arthas.dockerfile
+
+    depends_on:
+      - app
+
+    # 🔥 关键：用 service 名，不要用 container_name
+    pid: "service:app"
+
+    tty: true
+    stdin_open: true
+
+    user: "1000:1000"
+
+    cap_add:
+      - SYS_PTRACE
+
+    cap_drop:
+      - ALL
+
+    security_opt:
+      - no-new-privileges:true
+
+    networks:
+      - arthas
 
 networks:
   arthas:
