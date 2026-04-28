@@ -1,8 +1,0 @@
-#name: xujian
-version: "3.8"
-include:
-  - compose-tools-gitea.yml
-
-networks:
-  infra:
-    driver: bridge
