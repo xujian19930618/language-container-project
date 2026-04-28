@@ -16,27 +16,19 @@ services:
     build:
       context: .
       dockerfile: Dockerfile/arthas/arthas.dockerfile
-
     depends_on:
       - app
-
     # 🔥 关键：用 service 名，不要用 container_name
     pid: "service:app"
-
     tty: true
     stdin_open: true
-
     user: "1000:1000"
-
     cap_add:
       - SYS_PTRACE
-
     cap_drop:
       - ALL
-
     security_opt:
       - no-new-privileges:true
-
     networks:
       - arthas
 
