@@ -1,0 +1,16 @@
+services:
+  nginx:
+    container_name: nginx
+    image: nginx:stable-perl
+    volumes:
+      - ./config/nginx/conf.d:/etc/nginx/conf.d
+      - ./config/nginx/project:/usr/share/nginx/html/
+    #    restart: always
+    expose:
+      - "80:80"
+    ports:
+      - "80:80"
+    deploy:
+      replicas: 1
+    networks:
+      - iufc
