@@ -1,0 +1,25 @@
+services:
+  mysql:
+    container_name: mysql
+    image: mysql:9.6.0-oracle
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./config/mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      - ./config/mysql/conf.d:/etc/mysql/conf.d
+      - ./data/mysql/log:/var/log/mysql
+      - ./data/mysql/data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ALLOW_EMPTY_PASSWORD: no
+      MYSQL_DATABASE: nacos_config
+      MYSQL_USER: 'nacos'
+      MYSQL_PASSWORD: 'Nacos@1234'
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      interval: 5s
+      timeout: 10s
+      retries: 10
+    #    restart: always
+    networks:
+      - iufc

@@ -1,0 +1,11 @@
+name: iufc
+include:
+  - docker-compose-mysql.yaml
+  - docker-compose-nacos.yaml
+  - docker-compose-redis.yaml
+  - docker-compose-elastic.yaml
+  - docker-compose-kafka.yaml
+
+networks:
+  iufc:
+    driver: bridge
