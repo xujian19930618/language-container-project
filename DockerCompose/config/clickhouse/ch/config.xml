@@ -1,0 +1,43 @@
+<clickhouse>
+
+    <!-- Keeper -->
+    <zookeeper>
+        <node>
+            <host>keeper1</host>
+            <port>9181</port>
+        </node>
+        <node>
+            <host>keeper2</host>
+            <port>9181</port>
+        </node>
+        <node>
+            <host>keeper3</host>
+            <port>9181</port>
+        </node>
+    </zookeeper>
+
+    <!-- 集群 -->
+    <remote_servers>
+        <cluster_2shards_2replicas>
+            <shard>
+                <replica>
+                    <host>clickhouse1</host>
+                    <port>9000</port>
+                </replica>
+                <replica>
+                    <host>clickhouse2</host>
+                    <port>9000</port>
+                </replica>
+            </shard>
+
+            <shard>
+                <replica>
+                    <host>clickhouse3</host>
+                    <port>9000</port>
+                </replica>
+            </shard>
+        </cluster_2shards_2replicas>
+    </remote_servers>
+
+    <listen_host>0.0.0.0</listen_host>
+</clickhouse>
