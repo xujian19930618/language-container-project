@@ -22,4 +22,5 @@ RUN chmod +x /start.sh
 #USER arthas
 
 
-ENTRYPOINT ["/start.sh"]
+#ENTRYPOINT ["/start.sh"]
+CMD ["tail", "-f", "/dev/null"]

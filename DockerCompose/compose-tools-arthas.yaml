@@ -1,37 +1,14 @@
 name: arthas
 
 services:
-
-  app:
-    image: eclipse-temurin:17-jdk
-    working_dir: /app
-    volumes:
-      - ./data/arthas/math-game.jar:/app/math-game.jar:ro
-    command: ["java", "-jar", "/app/math-game.jar"]
-    pid: "host"
-    networks:
-      - arthas
-
   arthas:
     build:
       context: .
       dockerfile: Dockerfile/arthas/arthas.dockerfile
-    depends_on:
-      - app
-    # 🔥 关键：用 service 名，不要用 container_name
-    pid: "service:app"
-    tty: true
-    stdin_open: true
-    user: "1000:1000"
-    cap_add:
-      - SYS_PTRACE
-    cap_drop:
-      - ALL
-    security_opt:
-      - no-new-privileges:true
+    command: [ "java","-jar", "/opt/arthas/math-game.jar" ]
+    privileged: true
     networks:
       - arthas
-
 networks:
   arthas:
     driver: bridge

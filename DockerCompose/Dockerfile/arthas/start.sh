@@ -13,5 +13,4 @@ while true; do
   sleep 2
 done
 
-# 使用本地离线启动（不联网）
-/opt/arthas/arthas-boot.sh $PID
+#exec java -jar /opt/arthas/arthas-boot.jar --target-ip 0.0.0.0 $PID
