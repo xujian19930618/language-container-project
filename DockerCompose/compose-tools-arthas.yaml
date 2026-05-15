@@ -7,8 +7,21 @@ services:
       dockerfile: Dockerfile/arthas/arthas.dockerfile
     command: [ "java","-jar", "/opt/arthas/math-game.jar" ]
     privileged: true
+    ports:
+      - "8563:8563"
     networks:
       - arthas
+  tunnel:
+    build:
+      context: .
+      dockerfile: Dockerfile/arthas/arthas-tunnel-server.dockerfile
+    privileged: true
+    ports:
+      - "8081:8080"
+      - "7777:7777"
+    networks:
+      - arthas
+
 networks:
   arthas:
     driver: bridge
