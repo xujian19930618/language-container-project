@@ -1,7 +1,7 @@
 name: flink
 services:
   jobmanager:
-    image: flink:scala_2.12-java21
+    image: apache/flink:2.2-scala_2.12-java21
     ports:
       - "8081:8081"
     command: jobmanager
@@ -12,7 +12,7 @@ services:
     networks:
       - flink
   taskmanager:
-    image: flink:scala_2.12-java21
+    image: apache/flink:2.2-scala_2.12-java21
     depends_on:
       - jobmanager
     command: taskmanager
@@ -25,7 +25,7 @@ services:
     networks:
       - flink
   sql-client:
-    image: flink:scala_2.12-java21
+    image: apache/flink:2.2-scala_2.12-java21
     command: bin/sql-client.sh
     depends_on:
       - jobmanager

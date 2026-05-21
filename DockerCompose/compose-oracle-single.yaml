@@ -1,8 +1,0 @@
-name: oracle
-services:
-  oracle:
-    image: database/free:23.26.0.0-arm64
-
-networks:
-  oracle:
-    driver: bridge
