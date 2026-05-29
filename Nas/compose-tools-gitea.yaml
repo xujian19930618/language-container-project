@@ -18,7 +18,7 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: ./Postgres/data
+      device: /volume1/Docker/Postgres/data
 
 services:
   server:

@@ -6,7 +6,7 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: ./Portainer/data
+      device: /volume1/Docker/Portainer/data
 
 
 services:
